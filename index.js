@@ -20,7 +20,7 @@ app.get('/styles.css', (req, res)=> res.sendFile(styleSheet));
 
 app.get('/api/things', async (req,res,next) =>{
   try {
-    const response = await client.query('SELECT * FROM things');
+    const response = await client.query('SELECT * FROM things ORDER BY name');
     res.send(response.rows);
   } catch (ex) {
       next(ex)
@@ -43,7 +43,7 @@ app.put('/api/things/:id', async (req,res,next) =>{
     name = $2 WHERE id = $3 RETURNING *
     `;
     const response = await client.query(SQL, [req.body.user_id, req.body.name, req.params.id])
-    res.send(response.rows);
+    res.send(response.rows[0]);
   } catch (ex) {
       next(ex)
   }
